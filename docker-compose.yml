@@ -1,0 +1,28 @@
+services:
+  # app FastAPI
+  web:
+    build: .
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  # Banco de Dados PostgreSQL
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: sentinel_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
